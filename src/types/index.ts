@@ -18,3 +18,17 @@ interface VideoThumbnailI {
   width: number;
   height: number;
 }
+export interface ChannelType {
+  channel_id: string;
+  title: string;
+  description: string;
+  subscriber_count: string;
+  links: null | string[];
+  avatar: BannerI[];
+  banner: BannerI[];
+}
+interface BannerI {
+  url: string;
+  width: number;
+  height: number;
+}

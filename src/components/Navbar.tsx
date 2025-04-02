@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function YoutubeHeader() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,10 +11,10 @@ export default function YoutubeHeader() {
           <button className="text-white">
             <i className="h-6 w-6 fa fa-bars"></i>
           </button>
-          <div className="flex items-center">
+          <Link to={"/"} className="flex items-center">
             <i className="fab fa-youtube text-4xl text-red-700"></i>
             <span className="ml-1 font-bold text-white text-xl">YouTube</span>
-          </div>
+          </Link>
         </div>
 
         {/* Center section - Search */}

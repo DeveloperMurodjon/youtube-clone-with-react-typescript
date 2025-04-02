@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { YTService } from "../service/api.service";
 import { VideoType } from "../types";
 import { useDispatch } from "react-redux";
 import { setError, setIsLoading } from "../redux/slices/productSlice";
+import Comments from "./Comments";
 
 const VideoDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [video, setVideo] = useState<VideoType | null>(null);
   const dispatch = useDispatch();
   const [expand, setExpand] = useState(false);
@@ -17,7 +18,6 @@ const VideoDetails = () => {
         try {
           const data = await YTService.getVideoDetails(id);
           setVideo(data);
-          console.log(data);
         } catch (error) {
           console.log(error);
           dispatch(setError("Wrong ID"));
@@ -29,6 +29,7 @@ const VideoDetails = () => {
 
     getVideoDetails();
   }, [id]);
+  // tomoshalar sonini belgilash
   const ConvertViews = (views: number) => {
     if (views >= 1000000) {
       return `${(views / 1000000).toFixed(1)}M`;
@@ -38,7 +39,7 @@ const VideoDetails = () => {
       return views;
     }
   };
-
+  //qo'shimcha malumotlarni olish
   const textToLink = (text: string) => {
     const res = [];
     const tt = text.split(" ");
@@ -49,7 +50,6 @@ const VideoDetails = () => {
         res.push(tt[i]);
       }
     }
-    console.log(res);
     return res.join(" ");
   };
 
@@ -68,7 +68,8 @@ const VideoDetails = () => {
         </div>
         <div className="w-[300px] border border-slate-700 rounded flex-shrink-0"></div>
       </div>
-      <div className="mt-3">
+      {/* Video chanel informations  */}
+      <Link to={`/chanel/${video?.channel_id}`} className="mt-3">
         <h2 className="text-xl font-bold">{video?.title}</h2>
         <div className="flex gap-3 mt-3 items-center">
           <img
@@ -81,7 +82,8 @@ const VideoDetails = () => {
             <span className="text-sm opacity-70">1.92M followers</span>
           </div>
         </div>
-      </div>
+      </Link>
+      {/* additional informations */}
       <div
         className={`p-3 mt-5 rounded-xl bg-white/10 ${
           expand ? "h-auto" : "h-[200px]"
@@ -99,11 +101,16 @@ const VideoDetails = () => {
           }}
         ></p>
         {!expand && (
-          <div onClick={() =>setExpand(true)} className="absolute py-1 left-0 bottom-0 right-0 w-full bg-gradient-to-t from-[#1D202A] from-30% to-transparent text-center">
+          <div
+            onClick={() => setExpand(true)}
+            className="absolute py-1 left-0 bottom-0 right-0 w-full bg-gradient-to-t from-[#1D202A] from-30% to-transparent text-center"
+          >
             <i className="fa fa-chevron-down"></i>
           </div>
         )}
       </div>
+      {/* Comments */}
+      {id ? <Comments id={id} /> : null}
     </div>
   );
 };

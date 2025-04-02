@@ -4,14 +4,13 @@ import { Route, Routes } from "react-router-dom";
 import { setError, setIsLoading, setVideos } from "./redux/slices/productSlice";
 import { videos } from "./mock-data";
 import { Home, Navbar, VideoDetails } from "./components";
-// import { YTService } from "./service/api.service";
+import Chanel from "./components/Chanel";
+import Shorts from "./components/Shorts";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const getVideos = async () => {
-      // const {videos} = await YTService.getRecommended()
-      // console.log(videos)
       dispatch(setIsLoading(true));
       try {
         setTimeout(() => {
@@ -30,11 +29,16 @@ const App = () => {
   }, []);
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/videos/:id" element={<VideoDetails/>}/>
-      </Routes>
+      <Navbar />
+      <div className="flex">
+        {/* <Sidebar /> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/videos/:id" element={<VideoDetails />} />
+          <Route path="/chanel/:id" element={<Chanel />} />
+          <Route path="/shorts/:id" element={<Shorts />} />
+        </Routes>
+      </div>
     </div>
   );
 };
